@@ -30,8 +30,22 @@ def graph(reads,k) :
       G.add_node(s[i:i+k])
       G.add_node(s[i+1:i+k+1])
       G.add_edge(s[i:i+k],s[i+1:i+k+1])
-  return G
+  return rmLeaves(G)
 
+def rmLeaves(G):
+    leavesList = []
+    for node in G.nodes():
+        if G.out_degree(node) == 0:
+            leavesList.append(node)
+    while(leavesList):
+        leaf = leavesList.pop()
+        predecessors = G.predecessors(leaf)
+        G.remove_node(leaf)
+        for node in predecessors:
+            if G.out_degree(node) == 0:
+                leavesList.append(node)
+    return G
+        
 def graphgv(reads,k) : 
   G=gv.Digraph(format='svg')
   for s in reads : 
@@ -61,13 +75,13 @@ def main() :
   print (reads)
   k = 10
   start = time.clock()
-  #graph1 = graph(reads,k)
-  graph2 = graphgv(reads,k)
-  graph2.render(filename='img/graph2')
-  #nx.draw(graph1)
-  #plt.draw()
+  graph1 = graph(reads,k)
+  #graph2 = graphgv(reads,k)
+  #graph2.render(filename='img/graph2')
+  nx.draw(graph1)
+  plt.draw()
   print ("TIME :", time.clock() - start)
-  #plt.show()
+  plt.show()
 
 if __name__ == '__main__':
   main()

@@ -24,7 +24,7 @@ def k_mer(G,D, reads, k):
             G.add_node(read[i:i+k])
             read[i:i+k]
         for node in G.nodes():
-            if lst.has_key(node):
+            if node in lst:
                  (node1,node2)=lst[node]
                  G.add_edge(node1,node2)
                  D.edge(node1,node2)
@@ -39,7 +39,7 @@ def readfile(filename):
         read.append(next(file)[:-1])
     return read
 
-reads=readfile("HB173_sn12.fastq")
+reads=readfile("snRNA12/HB173_sn12.fastq")
 
 G,D=k_mer(G,D,reads,k)
 
